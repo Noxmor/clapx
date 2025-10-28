@@ -2,16 +2,16 @@
 
 .PHONY: install uninstall
 
-NAME="clapx"
-PREFIX="$(HOME)/.local/include"
+NAME=clapx
+PREFIX?=/usr/local
 
 install:
 	@echo "Installing $(NAME)..."
-	mkdir -p $(PREFIX)/$(NAME)
-	cp -r ./include/. $(PREFIX)/$(NAME)
+	mkdir -p $(PREFIX)/include/$(NAME)
+	cp -r ./include/. $(PREFIX)/include/$(NAME)
 	@echo "Successfully installed $(NAME)"
 
 uninstall:
 	@echo "Uninstalling $(NAME)..."
-	rm -rf $(PREFIX)/$(NAME)
+	rm -rf $(PREFIX)/include/$(NAME)
 	@echo "Successfully uninstalled $(NAME)"
