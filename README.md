@@ -6,6 +6,6 @@ A command-line argument parser single-header library written in C using [X macro
 ## Installation
 1. Start by cloning the repository with `git clone https://github.com/Noxmor/clapx`.
 2. Run `make install`.
-3. Done!
+3. Done! You can now include the library by typing `#include <clapx/clapx.h>`.
 > [!NOTE]
 > Alternatively, you can also just copy/clone the library locally and include it directly.
