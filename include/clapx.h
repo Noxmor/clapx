@@ -535,6 +535,7 @@ clapx_error_code_t clapx_string_parser_callback(const char** value, const char* 
 #ifdef CLAPX_IMPLEMENTATION
 
 #include <assert.h>
+#include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 
