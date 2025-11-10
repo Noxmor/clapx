@@ -643,7 +643,10 @@ static clapx_flag_t clapx_flags[] = { CLAPX_FLAGS };
 #define CLAPX_FLAG(label, type, value_type, long_name, short_name, callback, default_value) \
     static_assert(long_name != CLAPX_NO_LONG || short_name != CLAPX_NO_SHORT, "Flags must not specify both CLAPX_NO_LONG and CLAPX_NO_SHORT!"); \
     static_assert(long_name == CLAPX_NO_LONG || strlen(long_name) > 1, "Long names must have a length of at least 2!"); \
-    static_assert(short_name == CLAPX_NO_SHORT || isalnum(short_name), "Short name must be alphanumeric!");
+    static_assert(short_name == CLAPX_NO_SHORT \
+                  || (short_name >= 'a' && short_name <= 'z') \
+                  || (short_name >= 'A' && short_name <= 'Z') \
+                  || (short_name >= '0' && short_name <= '9'), "Short name must be alphanumeric!");
 CLAPX_FLAGS
 #undef CLAPX_FLAG
 #endif
