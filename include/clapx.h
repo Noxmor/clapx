@@ -646,6 +646,8 @@ enum
     CLAPX_FLAGS_COUNT
 };
 #undef CLAPX_FLAG
+#else
+#define CLAPX_FLAGS_COUNT 0
 #endif
 
 // Generate array of flags
