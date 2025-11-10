@@ -504,10 +504,22 @@ typedef struct clapx_subcommand
 clapx_error_code_t clapx_parse_args(int argc, char** argv);
 
 /**
+ * Prints the default usage string.
+ * @param argv0 The first element of argv.
+ */
+void clapx_print_usage_str(const char* argv0);
+
+/**
  * Retrieves the longest long_name of all flags.
  * @return Returns the length of the string.
  */
 size_t clapx_longest_long_name(void);
+
+/**
+ * Retrieves the longest subcommand name of all subcommands.
+ * @return Returns the length of the subcommand name.
+ */
+size_t clapx_longest_subcommand_name(void);
 
 /**
  * Parses an argument of a flag.
@@ -536,6 +548,7 @@ clapx_error_code_t clapx_string_parser_callback(const char** value, const char* 
 
 #include <assert.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 #include <ctype.h>
 
@@ -617,6 +630,10 @@ clapx_error_code_t clapx_string_parser_callback(const char** value, const char* 
 
 #ifndef CLAPX_ERROR_INVALID_FLAG_VALUE_CALLBACK
 #define CLAPX_ERROR_INVALID_FLAG_VALUE_CALLBACK
+#endif
+
+#ifndef CLAPX_USAGE_STR_COLUMN_GAP
+#define CLAPX_USAGE_STR_COLUMN_GAP 6
 #endif
 
 // Generate enum for indexing flags based on their label
@@ -927,6 +944,111 @@ clapx_error_code_t clapx_parse_args(int argc, char** argv)
     return CLAPX_SUCCESS;
 }
 
+void clapx_print_usage_str(const char* argv0)
+{
+#ifdef CLAPX_FLAGS
+#ifdef CLAPX_SUBCOMMANDS
+    printf("usage: %s [GLOBAL FLAG]... [SUBCOMMAND] [FLAG]... [ARG]...\n", argv0);
+#else
+    printf("usage: %s [FLAG]... [ARG]...\n", argv0);
+#endif
+#else
+#ifdef CLAPX_SUBCOMMANDS
+    printf("usage: %s [SUBCOMMAND] [FLAG]... [ARG]...\n", argv0);
+#else
+    printf("usage: %s [ARG]...", argv0);
+#endif
+#endif
+
+    size_t max_subcommand_flag_width = strlen("    -, --") + 1 + clapx_longest_long_name();
+    size_t max_subcommand_width = strlen("  ") + clapx_longest_subcommand_name();
+
+    size_t max_width = max_subcommand_width > max_subcommand_flag_width ? max_subcommand_width : max_subcommand_flag_width;
+    max_width += CLAPX_USAGE_STR_COLUMN_GAP;
+
+#ifdef CLAPX_FLAGS
+#ifdef CLAPX_SUBCOMMANDS
+    printf("\n[GLOBAL FLAG]S\n");
+#else
+    printf("\n[FLAG]S\n");
+#endif
+
+#define CLAPX_FLAG(label, type, value_type, long_name, short_name, callback, default_value) \
+    if (long_name != CLAPX_NO_LONG && short_name != CLAPX_NO_SHORT) \
+    { \
+        for (size_t i = printf("    -%c, --%s", short_name, long_name); i < max_width; ++i) \
+        { \
+            printf(" "); \
+        } \
+        \
+    } \
+    else if (long_name != CLAPX_NO_LONG) \
+    { \
+        for (size_t i = printf("        --%s", long_name); i < max_width; ++i) \
+        { \
+            printf(" "); \
+        } \
+        \
+    } \
+    else \
+    { \
+        for (size_t i = printf("    -%c    ", short_name); i < max_width; ++i) \
+        { \
+            printf(" "); \
+        } \
+        \
+    }\
+    \
+    printf("\n");
+CLAPX_FLAGS
+#undef CLAPX_FLAG
+#endif
+
+#ifdef CLAPX_SUBCOMMANDS
+    printf("\n[SUBCOMMAND]S");
+#define CLAPX_SUBCOMMAND(label, name, callback, ...) \
+    printf("\n"); \
+    \
+    for (size_t i = printf("  %s", name); i < max_width; ++i) \
+    { \
+        printf(" "); \
+    }\
+    \
+    printf("\n"); \
+    __VA_ARGS__
+#define CLAPX_FLAG(label, type, value_type, long_name, short_name, callback, default_value) \
+    if (long_name != CLAPX_NO_LONG && short_name != CLAPX_NO_SHORT) \
+    { \
+        for (size_t i = printf("    -%c, --%s", short_name, long_name); i < max_width; ++i) \
+        { \
+            printf(" "); \
+        } \
+        \
+    } \
+    else if (long_name != CLAPX_NO_LONG) \
+    { \
+        for (size_t i = printf("        --%s", long_name); i < max_width; ++i) \
+        { \
+            printf(" "); \
+        } \
+        \
+    } \
+    else \
+    { \
+        for (size_t i = printf("    -%c    ", short_name); i < max_width; ++i) \
+        { \
+            printf(" "); \
+        } \
+        \
+    } \
+    \
+    printf("\n");
+CLAPX_SUBCOMMANDS
+#undef CLAPX_FLAG
+#undef CLAPX_SUBCOMMAND
+#endif
+}
+
 size_t clapx_longest_long_name(void)
 {
     size_t result = 0;
@@ -935,6 +1057,30 @@ size_t clapx_longest_long_name(void)
     if (long_name != CLAPX_NO_LONG && result < strlen(long_name)) result = strlen(long_name);
 CLAPX_FLAGS
 #undef CLAPX_FLAG
+#endif
+
+#ifdef CLAPX_SUBCOMMANDS
+#define CLAPX_SUBCOMMAND(label, name, callback, ...) \
+    __VA_ARGS__
+#define CLAPX_FLAG(label, type, value_type, long_name, short_name, callback, default_value) \
+    if (long_name != CLAPX_NO_LONG && result < strlen(long_name)) result = strlen(long_name);
+CLAPX_SUBCOMMANDS
+#undef CLAPX_FLAG
+#undef CLAPX_SUBCOMMAND
+#endif
+
+    return result;
+}
+
+size_t clapx_longest_subcommand_name(void)
+{
+    size_t result = 0;
+
+#ifdef CLAPX_SUBCOMMANDS
+#define CLAPX_SUBCOMMAND(label, name, callback, ...) \
+    if (name != CLAPX_NO_LONG && result < strlen(name)) result = strlen(name);
+CLAPX_SUBCOMMANDS
+#undef CLAPX_SUBCOMMAND
 #endif
 
     return result;
