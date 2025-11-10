@@ -958,7 +958,7 @@ void clapx_print_usage_str(const char* argv0)
 #ifdef CLAPX_SUBCOMMANDS
     printf("usage: %s [SUBCOMMAND] [FLAG]... [ARG]...\n", argv0);
 #else
-    printf("usage: %s [ARG]...", argv0);
+    printf("usage: %s [ARG]...\n", argv0);
 #endif
 #endif
 
