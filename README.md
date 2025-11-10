@@ -26,30 +26,31 @@ In order to define global flags, you will need to define the `CLAPX_FLAGS` macro
 void help_callback(void);
 
 #define CLAPX_FLAGS \
-    CLAPX_BOOL_FLAG(help, "help", 'h', help_callback) \
-    CLAPX_STRING_FLAG(foo, "foo", CLAPX_NO_SHORT, CLAPX_NO_CALLBACK, "my-custom-default-string") \
-    CLAPX_CHAR_FLAG(bar, CLAPX_ONLY_SHORT('b'), CLAPX_NO_CALLBACK, 'b')
+    CLAPX_BOOL_FLAG(help, "help", 'h', "Prints this help message.", help_callback) \
+    CLAPX_STRING_FLAG(foo, "foo", CLAPX_NO_SHORT, CLAPX_NO_DESC, CLAPX_NO_CALLBACK, "my-custom-default-string") \
+    CLAPX_CHAR_FLAG(bar, CLAPX_ONLY_SHORT('b'), CLAPX_NO_DESC, CLAPX_NO_CALLBACK, 'b')
 ```
 
 #### List of macros for defining global flags
-- `CLAPX_BOOL_FLAG(label, long_name, short_name, callback)`
-- `CLAPX_U8_FLAG(label, type, long_name, short_name, callback, default_value)`
-- `CLAPX_U16_FLAG(label, type, long_name, short_name, callback, default_value)`
-- `CLAPX_U32_FLAG(label, type, long_name, short_name, callback, default_value)`
-- `CLAPX_U64_FLAG(label, type, long_name, short_name, callback, default_value)`
-- `CLAPX_I8_FLAG(label, type, long_name, short_name, callback, default_value)`
-- `CLAPX_I16_FLAG(label, type, long_name, short_name, callback, default_value)`
-- `CLAPX_I32_FLAG(label, type, long_name, short_name, callback, default_value)`
-- `CLAPX_I64_FLAG(label, type, long_name, short_name, callback, default_value)`
-- `CLAPX_CHAR_FLAG(label, type, long_name, short_name, callback, default_value)`
-- `CLAPX_STRING_FLAG(label, type, long_name, short_name, callback, default_value)`
-- `CLAPX_CUSTOM_FLAG(label, type, long_name, short_name, callback, parser)`
+- `CLAPX_BOOL_FLAG(label, long_name, short_name, desc, callback)`
+- `CLAPX_U8_FLAG(label, type, long_name, short_name, desc, callback, default_value)`
+- `CLAPX_U16_FLAG(label, type, long_name, short_name, desc, callback, default_value)`
+- `CLAPX_U32_FLAG(label, type, long_name, short_name, desc, callback, default_value)`
+- `CLAPX_U64_FLAG(label, type, long_name, short_name, desc, callback, default_value)`
+- `CLAPX_I8_FLAG(label, type, long_name, short_name, desc, callback, default_value)`
+- `CLAPX_I16_FLAG(label, type, long_name, short_name, desc, callback, default_value)`
+- `CLAPX_I32_FLAG(label, type, long_name, short_name, desc, callback, default_value)`
+- `CLAPX_I64_FLAG(label, type, long_name, short_name, desc, callback, default_value)`
+- `CLAPX_CHAR_FLAG(label, type, long_name, short_name, desc, callback, default_value)`
+- `CLAPX_STRING_FLAG(label, type, long_name, short_name, desc, callback, default_value)`
+- `CLAPX_CUSTOM_FLAG(label, type, long_name, short_name, desc, callback, parser)`
 
 where...
 - `label` is a unique and valid C identifier.
 - `type` is either `CLAPX_FLAG_TYPE_OPT_ARG` or `CLAPX_FLAG_TYPE_REQ_ARG`.
 - `long_name` is a string literal or `CLAPX_NO_LONG`.
 - `short_name` is an alphanumeric character or `CLAPX_NO_SHORT`.
+- `desc` is either a string literal or `CLAPX_NO_DESC`.
 - `callback` is a function pointer of type `clapx_flag_callback_t` or `CLAPX_NO_CALLBACK`. If set, this callback is triggered immediately after the flag is parsed.
 - `parser` is a function pointer of type `clapx_custom_parser_callback_t`.
 
@@ -64,16 +65,17 @@ In order to define subcommands, you will need to define the `CLAPX_SUBCOMMANDS` 
 void foo_callback(int argc, char** argv);
 
 #define CLAPX_SUBCOMMANDS \
-    CLAPX_SUBCOMMAND(foo, "foo", foo_callback) \
-    CLAPX_SUBCOMMAND(bar, "bar", CLAPX_NO_CALLBACK, CLAPX_BOOL_FLAG(help, "help", 'h', CLAPX_NO_CALLBACK))
+    CLAPX_SUBCOMMAND(foo, "foo", "The foo subcommand.", foo_callback) \
+    CLAPX_SUBCOMMAND(bar, "bar", CLAPX_NO_DESC, CLAPX_NO_CALLBACK, CLAPX_BOOL_FLAG(help, "help", 'h', CLAPX_NO_DESC, CLAPX_NO_CALLBACK))
 ```
 
 #### List of macros for defining subcommands
-- `CLAPX_SUBCOMMAND(label, name, callback, ...)`
+- `CLAPX_SUBCOMMAND(label, name, desc, callback, ...)`
 
 where...
 - `label` is a unique and valid C identifier.
 - `name` is a string literal.
+- `desc` is either a string literal or `CLAPX_NO_DESC`.
 - `callback` is a function pointer of type `clapx_subcommand_callback_t` or `CLAPX_NO_CALLBACK`. If set, this callback is triggered immediately after the command-line is completely parsed.
 - `...` are zero or more `CLAPX_FLAG` macros.
 
