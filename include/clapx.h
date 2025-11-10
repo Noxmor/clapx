@@ -17,7 +17,12 @@
 #define CLAPX_NO_SHORT '\0'
 
 /**
- * Value indicating a flag with no callback.
+ * Value indicating a flag/subcommand without a description.
+ */
+#define CLAPX_NO_DESC NULL
+
+/**
+ * Value indicating a flag/subcommand with no callback.
  */
 #define CLAPX_NO_CALLBACK NULL
 
@@ -190,10 +195,11 @@
  * @param label The unique label of the flag.
  * @param long_name The long name of the flag, either a string or CLAPX_NO_LONG.
  * @param short_name The short name of the flag, either an alphanumeric character or CLAPX_NO_SHORT.
+ * @param desc The description of the flag, either a string or CLAPX_NO_DESC.
  * @param callback The callback of the flag, either a function of type clapx_flag_callback_t or CLAPX_NO_CALLBACK.
  */
-#define CLAPX_BOOL_FLAG_IMPL(label, long_name, short_name, callback) \
-    CLAPX_FLAG(label, CLAPX_FLAG_TYPE_NO_VALUE, CLAPX_FLAG_VALUE_TYPE_BOOL, long_name, short_name, callback, .bool_value = 0)
+#define CLAPX_BOOL_FLAG_IMPL(label, long_name, short_name, desc, callback) \
+    CLAPX_FLAG(label, CLAPX_FLAG_TYPE_NO_VALUE, CLAPX_FLAG_VALUE_TYPE_BOOL, long_name, short_name, desc, callback, .bool_value = 0)
 
 /**
  * Defines a new uint8_t flag.
@@ -201,11 +207,12 @@
  * @param type The type of the flag, must be either CLAPX_FLAG_TYPE_OPT_VALUE or CLAPX_FLAG_TYPE_REQ_VALUE.
  * @param long_name The long name of the flag, either a string or CLAPX_NO_LONG.
  * @param short_name The short name of the flag, either an alphanumeric character or CLAPX_NO_SHORT.
+ * @param desc The description of the flag, either a string or CLAPX_NO_DESC.
  * @param callback The callback of the flag, either a function of type clapx_flag_callback_t or CLAPX_NO_CALLBACK.
  * @param default_value The default value for the flag.
  */
-#define CLAPX_U8_FLAG_IMPL(label, type, long_name, short_name, callback, default_value) \
-    CLAPX_FLAG(label, type, CLAPX_FLAG_VALUE_TYPE_U8, long_name, short_name, callback, .u8_value = default_value)
+#define CLAPX_U8_FLAG_IMPL(label, type, long_name, short_name, desc, callback, default_value) \
+    CLAPX_FLAG(label, type, CLAPX_FLAG_VALUE_TYPE_U8, long_name, short_name, desc, callback, .u8_value = default_value)
 
 /**
  * Defines a new uint16_t flag.
@@ -213,33 +220,36 @@
  * @param type The type of the flag, must be either CLAPX_FLAG_TYPE_OPT_VALUE or CLAPX_FLAG_TYPE_REQ_VALUE.
  * @param long_name The long name of the flag, either a string or CLAPX_NO_LONG.
  * @param short_name The short name of the flag, either an alphanumeric character or CLAPX_NO_SHORT.
+ * @param desc The description of the flag, either a string or CLAPX_NO_DESC.
  * @param callback The callback of the flag, either a function of type clapx_flag_callback_t or CLAPX_NO_CALLBACK.
  * @param default_value The default value for the flag.
  */
-#define CLAPX_U16_FLAG_IMPL(label, type, long_name, short_name, callback, default_value) \
-    CLAPX_FLAG(label, type, CLAPX_FLAG_VALUE_TYPE_U16, long_name, short_name, callback, .u16_value = default_value)
+#define CLAPX_U16_FLAG_IMPL(label, type, long_name, short_name, desc, callback, default_value) \
+    CLAPX_FLAG(label, type, CLAPX_FLAG_VALUE_TYPE_U16, long_name, short_name, desc, callback, .u16_value = default_value)
 /**
  * Defines a new uint32_t flag.
  * @param label The unique label of the flag.
  * @param type The type of the flag, must be either CLAPX_FLAG_TYPE_OPT_VALUE or CLAPX_FLAG_TYPE_REQ_VALUE.
  * @param long_name The long name of the flag, either a string or CLAPX_NO_LONG.
  * @param short_name The short name of the flag, either an alphanumeric character or CLAPX_NO_SHORT.
+ * @param desc The description of the flag, either a string or CLAPX_NO_DESC.
  * @param callback The callback of the flag, either a function of type clapx_flag_callback_t or CLAPX_NO_CALLBACK.
  * @param default_value The default value for the flag.
  */
-#define CLAPX_U32_FLAG_IMPL(label, type, long_name, short_name, callback, default_value) \
-    CLAPX_FLAG(label, type, CLAPX_FLAG_VALUE_TYPE_U32, long_name, short_name, callback, .u32_value = default_value)
+#define CLAPX_U32_FLAG_IMPL(label, type, long_name, short_name, desc, callback, default_value) \
+    CLAPX_FLAG(label, type, CLAPX_FLAG_VALUE_TYPE_U32, long_name, short_name, desc, callback, .u32_value = default_value)
 /**
  * Defines a new uint64_t flag.
  * @param label The unique label of the flag.
  * @param type The type of the flag, must be either CLAPX_FLAG_TYPE_OPT_VALUE or CLAPX_FLAG_TYPE_REQ_VALUE.
  * @param long_name The long name of the flag, either a string or CLAPX_NO_LONG.
  * @param short_name The short name of the flag, either an alphanumeric character or CLAPX_NO_SHORT.
+ * @param desc The description of the flag, either a string or CLAPX_NO_DESC.
  * @param callback The callback of the flag, either a function of type clapx_flag_callback_t or CLAPX_NO_CALLBACK.
  * @param default_value The default value for the flag.
  */
-#define CLAPX_U64_FLAG_IMPL(label, type, long_name, short_name, callback, default_value) \
-    CLAPX_FLAG(label, type, CLAPX_FLAG_VALUE_TYPE_U64, long_name, short_name, callback, .u64_value = default_value)
+#define CLAPX_U64_FLAG_IMPL(label, type, long_name, short_name, desc, callback, default_value) \
+    CLAPX_FLAG(label, type, CLAPX_FLAG_VALUE_TYPE_U64, long_name, short_name, desc, callback, .u64_value = default_value)
 
 /**
  * Defines a new int8_t flag.
@@ -247,11 +257,12 @@
  * @param type The type of the flag, must be either CLAPX_FLAG_TYPE_OPT_VALUE or CLAPX_FLAG_TYPE_REQ_VALUE.
  * @param long_name The long name of the flag, either a string or CLAPX_NO_LONG.
  * @param short_name The short name of the flag, either an alphanumeric character or CLAPX_NO_SHORT.
+ * @param desc The description of the flag, either a string or CLAPX_NO_DESC.
  * @param callback The callback of the flag, either a function of type clapx_flag_callback_t or CLAPX_NO_CALLBACK.
  * @param default_value The default value for the flag.
  */
-#define CLAPX_I8_FLAG_IMPL(label, type, long_name, short_name, callback, default_value) \
-    CLAPX_FLAG(label, type, CLAPX_FLAG_VALUE_TYPE_I8, long_name, short_name, callback, .i8_value = default_value)
+#define CLAPX_I8_FLAG_IMPL(label, type, long_name, short_name, desc, callback, default_value) \
+    CLAPX_FLAG(label, type, CLAPX_FLAG_VALUE_TYPE_I8, long_name, short_name, desc, callback, .i8_value = default_value)
 
 /**
  * Defines a new int16_t flag.
@@ -259,33 +270,36 @@
  * @param type The type of the flag, must be either CLAPX_FLAG_TYPE_OPT_VALUE or CLAPX_FLAG_TYPE_REQ_VALUE.
  * @param long_name The long name of the flag, either a string or CLAPX_NO_LONG.
  * @param short_name The short name of the flag, either an alphanumeric character or CLAPX_NO_SHORT.
+ * @param desc The description of the flag, either a string or CLAPX_NO_DESC.
  * @param callback The callback of the flag, either a function of type clapx_flag_callback_t or CLAPX_NO_CALLBACK.
  * @param default_value The default value for the flag.
  */
-#define CLAPX_I16_FLAG_IMPL(label, type, long_name, short_name, callback, default_value) \
-    CLAPX_FLAG(label, type, CLAPX_FLAG_VALUE_TYPE_I16, long_name, short_name, callback, .i16_value = default_value)
+#define CLAPX_I16_FLAG_IMPL(label, type, long_name, short_name, desc, callback, default_value) \
+    CLAPX_FLAG(label, type, CLAPX_FLAG_VALUE_TYPE_I16, long_name, short_name, desc, callback, .i16_value = default_value)
 /**
  * Defines a new int32_t flag.
  * @param label The unique label of the flag.
  * @param type The type of the flag, must be either CLAPX_FLAG_TYPE_OPT_VALUE or CLAPX_FLAG_TYPE_REQ_VALUE.
  * @param long_name The long name of the flag, either a string or CLAPX_NO_LONG.
  * @param short_name The short name of the flag, either an alphanumeric character or CLAPX_NO_SHORT.
+ * @param desc The description of the flag, either a string or CLAPX_NO_DESC.
  * @param callback The callback of the flag, either a function of type clapx_flag_callback_t or CLAPX_NO_CALLBACK.
  * @param default_value The default value for the flag.
  */
-#define CLAPX_I32_FLAG_IMPL(label, type, long_name, short_name, callback, default_value) \
-    CLAPX_FLAG(label, type, CLAPX_FLAG_VALUE_TYPE_I32, long_name, short_name, callback, .i32_value = default_value)
+#define CLAPX_I32_FLAG_IMPL(label, type, long_name, short_name, desc, callback, default_value) \
+    CLAPX_FLAG(label, type, CLAPX_FLAG_VALUE_TYPE_I32, long_name, short_name, desc, callback, .i32_value = default_value)
 /**
  * Defines a new int64_t flag.
  * @param label The unique label of the flag.
  * @param type The type of the flag, must be either CLAPX_FLAG_TYPE_OPT_VALUE or CLAPX_FLAG_TYPE_REQ_VALUE.
  * @param long_name The long name of the flag, either a string or CLAPX_NO_LONG.
  * @param short_name The short name of the flag, either an alphanumeric character or CLAPX_NO_SHORT.
+ * @param desc The description of the flag, either a string or CLAPX_NO_DESC.
  * @param callback The callback of the flag, either a function of type clapx_flag_callback_t or CLAPX_NO_CALLBACK.
  * @param default_value The default value for the flag.
  */
-#define CLAPX_I64_FLAG_IMPL(label, type, long_name, short_name, callback, default_value) \
-    CLAPX_FLAG(label, type, CLAPX_FLAG_VALUE_TYPE_I64, long_name, short_name, callback, .i64_value = default_value)
+#define CLAPX_I64_FLAG_IMPL(label, type, long_name, short_name, desc, callback, default_value) \
+    CLAPX_FLAG(label, type, CLAPX_FLAG_VALUE_TYPE_I64, long_name, short_name, desc, callback, .i64_value = default_value)
 
 /**
  * Defines a new char flag.
@@ -293,22 +307,24 @@
  * @param type The type of the flag, must be either CLAPX_FLAG_TYPE_OPT_VALUE or CLAPX_FLAG_TYPE_REQ_VALUE.
  * @param long_name The long name of the flag, either a string or CLAPX_NO_LONG.
  * @param short_name The short name of the flag, either an alphanumeric character or CLAPX_NO_SHORT.
+ * @param desc The description of the flag, either a string or CLAPX_NO_DESC.
  * @param callback The callback of the flag, either a function of type clapx_flag_callback_t or CLAPX_NO_CALLBACK.
  * @param default_value The default value for the flag.
  */
-#define CLAPX_CHAR_FLAG_IMPL(label, type, long_name, short_name, callback, default_value) \
-    CLAPX_FLAG(label, type, CLAPX_FLAG_VALUE_TYPE_CHAR, long_name, short_name, callback, .char_value = default_value)
+#define CLAPX_CHAR_FLAG_IMPL(label, type, long_name, short_name, desc, callback, default_value) \
+    CLAPX_FLAG(label, type, CLAPX_FLAG_VALUE_TYPE_CHAR, long_name, short_name, desc, callback, .char_value = default_value)
 /**
  * Defines a new string flag.
  * @param label The unique label of the flag.
  * @param type The type of the flag, must be either CLAPX_FLAG_TYPE_OPT_VALUE or CLAPX_FLAG_TYPE_REQ_VALUE.
  * @param long_name The long name of the flag, either a string or CLAPX_NO_LONG.
  * @param short_name The short name of the flag, either an alphanumeric character or CLAPX_NO_SHORT.
+ * @param desc The description of the flag, either a string or CLAPX_NO_DESC.
  * @param callback The callback of the flag, either a function of type clapx_flag_callback_t or CLAPX_NO_CALLBACK.
  * @param default_value The default value for the flag.
  */
-#define CLAPX_STRING_FLAG_IMPL(label, type, long_name, short_name, callback, default_value) \
-    CLAPX_FLAG(label, type, CLAPX_FLAG_VALUE_TYPE_STRING, long_name, short_name, callback, .string_value = default_value)
+#define CLAPX_STRING_FLAG_IMPL(label, type, long_name, short_name, desc, callback, default_value) \
+    CLAPX_FLAG(label, type, CLAPX_FLAG_VALUE_TYPE_STRING, long_name, short_name, desc, callback, .string_value = default_value)
 
 /**
  * Defines a new custom flag.
@@ -316,11 +332,12 @@
  * @param type The type of the flag, must be either CLAPX_FLAG_TYPE_OPT_VALUE or CLAPX_FLAG_TYPE_REQ_VALUE.
  * @param long_name The long name of the flag, either a string or CLAPX_NO_LONG.
  * @param short_name The short name of the flag, either an alphanumeric character or CLAPX_NO_SHORT.
+ * @param desc The description of the flag, either a string or CLAPX_NO_DESC.
  * @param callback The callback of the flag, either a function of type clapx_flag_callback_t or CLAPX_NO_CALLBACK.
  * @param parser The custom parser function for the flag, must be of type clapx_custom_parser_callback_t.
  */
-#define CLAPX_CUSTOM_FLAG_IMPL(label, type, long_name, short_name, callback, parser) \
-    CLAPX_FLAG(label, type, CLAPX_FLAG_VALUE_TYPE_CUSTOM, long_name, short_name, callback, .custom_parser_callback = parser)
+#define CLAPX_CUSTOM_FLAG_IMPL(label, type, long_name, short_name, desc, callback, parser) \
+    CLAPX_FLAG(label, type, CLAPX_FLAG_VALUE_TYPE_CUSTOM, long_name, short_name, desc, callback, .custom_parser_callback = parser)
 
 /**
  * Defines a new bool flag.
@@ -466,6 +483,7 @@ typedef struct clapx_flag
     clapx_flag_value_type_t value_type;
     const char* long_name;
     char short_name;
+    const char* desc;
     clapx_flag_callback_t callback;
     union
     {
@@ -490,6 +508,7 @@ typedef struct clapx_flag
 typedef struct clapx_subcommand
 {
     const char* name;
+    const char* desc;
     clapx_subcommand_callback_t callback;
     clapx_flag_t* flags;
     size_t flags_count;
@@ -638,7 +657,7 @@ clapx_error_code_t clapx_string_parser_callback(const char** value, const char* 
 
 // Generate enum for indexing flags based on their label
 #ifdef CLAPX_FLAGS
-#define CLAPX_FLAG(label, type, value_type, long_name, short_name, callback, default_value) \
+#define CLAPX_FLAG(label, type, value_type, long_name, short_name, desc, callback, default_value) \
     CLAPX_FLAG_INDEX_##label,
 enum
 {
@@ -652,15 +671,15 @@ enum
 
 // Generate array of flags
 #ifdef CLAPX_FLAGS
-#define CLAPX_FLAG(label, type, value_type, long_name, short_name, callback, default_value) \
-    (clapx_flag_t){ type, value_type, long_name, short_name, callback, default_value},
+#define CLAPX_FLAG(label, type, value_type, long_name, short_name, desc, callback, default_value) \
+    (clapx_flag_t){ type, value_type, long_name, short_name, desc, callback, default_value},
 static clapx_flag_t clapx_flags[] = { CLAPX_FLAGS };
 #undef CLAPX_FLAG
 #endif
 
 // Assert valid flags
 #ifdef CLAPX_FLAGS
-#define CLAPX_FLAG(label, type, value_type, long_name, short_name, callback, default_value) \
+#define CLAPX_FLAG(label, type, value_type, long_name, short_name, desc, callback, default_value) \
     static_assert(long_name != CLAPX_NO_LONG || short_name != CLAPX_NO_SHORT, "Flags must not specify both CLAPX_NO_LONG and CLAPX_NO_SHORT!"); \
     static_assert(long_name == CLAPX_NO_LONG || strlen(long_name) > 1, "Long names must have a length of at least 2!"); \
     static_assert(short_name == CLAPX_NO_SHORT \
@@ -673,7 +692,7 @@ CLAPX_FLAGS
 
 // Generate enum for indexing subcommands based on their label
 #ifdef CLAPX_SUBCOMMANDS
-#define CLAPX_SUBCOMMAND(label, name, callback, ...) \
+#define CLAPX_SUBCOMMAND(label, name, desc, callback, ...) \
     CLAPX_SUBCOMMAND_INDEX_##label,
 enum
 {
@@ -685,9 +704,9 @@ enum
 
 // Generate enums for indexing subcommand flags based on their label
 #ifdef CLAPX_SUBCOMMANDS
-#define CLAPX_SUBCOMMAND(label, name, callback, ...) \
+#define CLAPX_SUBCOMMAND(label, name, desc, callback, ...) \
     enum { __VA_ARGS__ CLAPX_SUBCOMMAND_##label##_COUNT };
-#define CLAPX_FLAG(label, type, value_type, long_name, short_name, callback, default_value) \
+#define CLAPX_FLAG(label, type, value_type, long_name, short_name, desc, callback, default_value) \
     CLAPX_FLAG_INDEX_##label,
 CLAPX_SUBCOMMANDS
 #undef CLAPX_FLAG
@@ -696,10 +715,10 @@ CLAPX_SUBCOMMANDS
 
 // Generate array of subcommands
 #ifdef CLAPX_SUBCOMMANDS
-#define CLAPX_SUBCOMMAND(label, name, callback, ...) \
-    { name, callback, (clapx_flag_t[]){ __VA_ARGS__ }, sizeof((clapx_flag_t[]){ __VA_ARGS__ }) / sizeof(clapx_flag_t) },
-#define CLAPX_FLAG(label, type, value_type, long_name, short_name, callback, default_value) \
-    (clapx_flag_t){ type, value_type, long_name, short_name, callback, default_value }
+#define CLAPX_SUBCOMMAND(label, name, desc, callback, ...) \
+    { name, desc, callback, (clapx_flag_t[]){ __VA_ARGS__ }, sizeof((clapx_flag_t[]){ __VA_ARGS__ }) / sizeof(clapx_flag_t) },
+#define CLAPX_FLAG(label, type, value_type, long_name, short_name, desc, callback, default_value) \
+    (clapx_flag_t){ type, value_type, long_name, short_name, desc, callback, default_value }
 static clapx_subcommand_t clapx_subcommands[] = { CLAPX_SUBCOMMANDS };
 #undef CLAPX_FLAG
 #undef CLAPX_SUBCOMMAND
@@ -707,8 +726,8 @@ static clapx_subcommand_t clapx_subcommands[] = { CLAPX_SUBCOMMANDS };
 
 // Assert valid subcommand flags
 #ifdef CLAPX_SUBCOMMANDS
-#define CLAPX_SUBCOMMAND(label, name, callback, ...) __VA_ARGS__
-#define CLAPX_FLAG(label, type, value_type, long_name, short_name, callback, default_value) \
+#define CLAPX_SUBCOMMAND(label, name, desc, callback, ...) __VA_ARGS__
+#define CLAPX_FLAG(label, type, value_type, long_name, short_name, desc, callback, default_value) \
     static_assert(long_name != CLAPX_NO_LONG || short_name != CLAPX_NO_SHORT, "Flags must not specify both CLAPX_NO_LONG and CLAPX_NO_SHORT!");
 CLAPX_SUBCOMMANDS
 #undef CLAPX_FLAG
@@ -975,7 +994,7 @@ void clapx_print_usage_str(const char* argv0)
     printf("\n[FLAG]S\n");
 #endif
 
-#define CLAPX_FLAG(label, type, value_type, long_name, short_name, callback, default_value) \
+#define CLAPX_FLAG(label, type, value_type, long_name, short_name, desc, callback, default_value) \
     if (long_name != CLAPX_NO_LONG && short_name != CLAPX_NO_SHORT) \
     { \
         for (size_t i = printf("    -%c, --%s", short_name, long_name); i < max_width; ++i) \
@@ -1001,14 +1020,14 @@ void clapx_print_usage_str(const char* argv0)
         \
     }\
     \
-    printf("\n");
+    printf("%s\n", desc != CLAPX_NO_DESC ? desc : "");
 CLAPX_FLAGS
 #undef CLAPX_FLAG
 #endif
 
 #ifdef CLAPX_SUBCOMMANDS
     printf("\n[SUBCOMMAND]S");
-#define CLAPX_SUBCOMMAND(label, name, callback, ...) \
+#define CLAPX_SUBCOMMAND(label, name, desc, callback, ...) \
     printf("\n"); \
     \
     for (size_t i = printf("  %s", name); i < max_width; ++i) \
@@ -1016,9 +1035,9 @@ CLAPX_FLAGS
         printf(" "); \
     }\
     \
-    printf("\n"); \
+    printf("%s\n", desc != CLAPX_NO_DESC ? desc : ""); \
     __VA_ARGS__
-#define CLAPX_FLAG(label, type, value_type, long_name, short_name, callback, default_value) \
+#define CLAPX_FLAG(label, type, value_type, long_name, short_name, desc, callback, default_value) \
     if (long_name != CLAPX_NO_LONG && short_name != CLAPX_NO_SHORT) \
     { \
         for (size_t i = printf("    -%c, --%s", short_name, long_name); i < max_width; ++i) \
@@ -1044,7 +1063,7 @@ CLAPX_FLAGS
         \
     } \
     \
-    printf("\n");
+    printf("%s\n", desc != CLAPX_NO_DESC ? desc : "");
 CLAPX_SUBCOMMANDS
 #undef CLAPX_FLAG
 #undef CLAPX_SUBCOMMAND
@@ -1055,16 +1074,16 @@ size_t clapx_longest_long_name(void)
 {
     size_t result = 0;
 #ifdef CLAPX_FLAGS
-#define CLAPX_FLAG(label, type, value_type, long_name, short_name, callback, default_value) \
+#define CLAPX_FLAG(label, type, value_type, long_name, short_name, desc, callback, default_value) \
     if (long_name != CLAPX_NO_LONG && result < strlen(long_name)) result = strlen(long_name);
 CLAPX_FLAGS
 #undef CLAPX_FLAG
 #endif
 
 #ifdef CLAPX_SUBCOMMANDS
-#define CLAPX_SUBCOMMAND(label, name, callback, ...) \
+#define CLAPX_SUBCOMMAND(label, name, desc, callback, ...) \
     __VA_ARGS__
-#define CLAPX_FLAG(label, type, value_type, long_name, short_name, callback, default_value) \
+#define CLAPX_FLAG(label, type, value_type, long_name, short_name, desc, callback, default_value) \
     if (long_name != CLAPX_NO_LONG && result < strlen(long_name)) result = strlen(long_name);
 CLAPX_SUBCOMMANDS
 #undef CLAPX_FLAG
